@@ -1,0 +1,11 @@
+CREATE DATABASE db;
+
+USE db;
+
+CREATE TABLE utenti (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  nome_utente VARCHAR(255) NOT NULL UNIQUE,
+  hash_password VARCHAR(255) NOT NULL
+);
+
+

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css">
+  <title>Calcolo IBM</title>
+</head>
+
+<body>
+  <div class="container">
+    <div class="row justify-content-end mt-3">
+      <div class="col-md-6">
+        <a href="/logout" class="btn btn-danger">Logout</a>
+      </div>
+    </div>
+    <div class="row justify-content-center mt-5">
+      <div class="col-md-6">
+        <h2 class="mb-4">Calcolo IBM</h2>
+        <form id="ibmForm">
+          <div class="mb-3">
+            <label for="peso" class="form-label">Peso (kg)</label>
+            <input type="number" class="form-control" id="peso" name="peso" step="0.01" required>
+          </div>
+          <div class="mb-3">
+            <label for="altezza" class="form-label">Altezza (m)</label>
+            <input type="number" class="form-control" id="altezza" name="altezza" step="0.01" required>
+          </div>
+          <button type="submit" class="btn btn-primary">Calcola</button>
+        </form>
+        <div id="result" class="mt-4" style="display: none;">
+          <h4>Risultato:</h4>
+          <p><strong>IBM:</strong> <span id="ibmValue"></span></p>
+          <p><strong>Fascia corporea:</strong> <span id="fasciaCorporea"></span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('ibmForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      
+      const peso = parseFloat(document.getElementById('peso').value);
+      const altezza = parseFloat(document.getElementById('altezza').value);
+      
+      if (isNaN(peso) || isNaN(altezza)) {
+        alert('Peso e altezza devono essere numeri validi.');
+        return;
+      }
+      
+      fetch(`/api?peso=${peso}&altezza=${altezza}`)
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById('ibmValue').textContent = data.ibm;
+          document.getElementById('fasciaCorporea').textContent = data.fasciaCorporea;
+          document.getElementById('result').style.display = 'block';
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    });
+  </script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
